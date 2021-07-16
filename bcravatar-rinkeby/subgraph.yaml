@@ -1,0 +1,42 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: BCRAvatar
+    network: rinkeby
+    source:
+      address: "0xDB4308b62A4eBBc67cF7D9d412FEfC65e5b9DE2a"
+      abi: BCRAvatar
+      startBlock: 8934371
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - AvatarCreated
+        - AvatarUpdated
+        - NFTRegistered
+        - OwnershipTransferred
+        - ServiceDonated
+        - Transfer
+      abis:
+        - name: BCRAvatar
+          file: ./abis/BCRAvatar.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: AvatarCreated(indexed address,string)
+          handler: handleAvatarCreated
+        - event: AvatarUpdated(indexed address,string)
+          handler: handleAvatarUpdated
+        - event: NFTRegistered(indexed address,(address,uint256))
+          handler: handleNFTRegistered
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: ServiceDonated(indexed address,uint256)
+          handler: handleServiceDonated
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts

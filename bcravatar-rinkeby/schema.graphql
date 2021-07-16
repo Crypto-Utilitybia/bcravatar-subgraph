@@ -1,0 +1,19 @@
+type Approve @entity {
+  id: ID!
+  count: BigInt!
+  owner: Bytes! # address
+  spender: Bytes! # address
+}
+
+type Avatar @entity {
+  id: ID!
+  uri: String!
+  nft: Bytes! # address
+  tokenId: BigInt!
+}
+
+type Donation @entity {
+  id: ID!
+  donator: Bytes! # address
+  amount: BigInt!
+}
