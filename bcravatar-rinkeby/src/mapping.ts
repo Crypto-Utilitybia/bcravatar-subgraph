@@ -4,12 +4,14 @@ import {
   Approval,
   AvatarCreated,
   AvatarUpdated,
+  ProfileCreated,
+  ProfileUpdated,
   NFTRegistered,
   OwnershipTransferred,
   ServiceDonated,
   Transfer,
 } from '../generated/BCRAvatar/BCRAvatar'
-import { Approve, Avatar, Donation } from '../generated/schema'
+import { Approve, Avatar, Profile, Donation } from '../generated/schema'
 
 export function handleApproval(event: Approval): void {
   // Entities can be loaded from the store using a string ID; this ID
@@ -68,24 +70,39 @@ export function handleApproval(event: Approval): void {
 }
 
 export function handleAvatarCreated(event: AvatarCreated): void {
-  const entity = new Avatar(event.params.account.toString())
+  const entity = new Avatar(event.params.account.toHex())
   entity.uri = event.params.avatarURI
   entity.save()
 }
 
 export function handleAvatarUpdated(event: AvatarUpdated): void {
-  let entity = Avatar.load(event.params.account.toString())
+  let entity = Avatar.load(event.params.account.toHex())
   if (!entity) {
-    entity = new Avatar(event.params.account.toString())
+    entity = new Avatar(event.params.account.toHex())
   }
   entity.uri = event.params.avatarURI
   entity.save()
 }
 
-export function handleNFTRegistered(event: NFTRegistered): void {
-  let entity = Avatar.load(event.params.account.toString())
+export function handleProfileCreated(event: ProfileCreated): void {
+  const entity = new Profile(event.params.account.toHex())
+  entity.uri = event.params.profileURI
+  entity.save()
+}
+
+export function handleProfileUpdated(event: ProfileUpdated): void {
+  let entity = Profile.load(event.params.account.toHex())
   if (!entity) {
-    entity = new Avatar(event.params.account.toString())
+    entity = new Profile(event.params.account.toHex())
+  }
+  entity.uri = event.params.profileURI
+  entity.save()
+}
+
+export function handleNFTRegistered(event: NFTRegistered): void {
+  let entity = Avatar.load(event.params.account.toHex())
+  if (!entity) {
+    entity = new Avatar(event.params.account.toHex())
   }
   entity.nft = event.params.nft._contract
   entity.tokenId = event.params.nft.tokenId

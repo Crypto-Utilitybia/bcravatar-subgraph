@@ -134,6 +134,50 @@ export class OwnershipTransferred__Params {
   }
 }
 
+export class ProfileCreated extends ethereum.Event {
+  get params(): ProfileCreated__Params {
+    return new ProfileCreated__Params(this);
+  }
+}
+
+export class ProfileCreated__Params {
+  _event: ProfileCreated;
+
+  constructor(event: ProfileCreated) {
+    this._event = event;
+  }
+
+  get account(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get profileURI(): string {
+    return this._event.parameters[1].value.toString();
+  }
+}
+
+export class ProfileUpdated extends ethereum.Event {
+  get params(): ProfileUpdated__Params {
+    return new ProfileUpdated__Params(this);
+  }
+}
+
+export class ProfileUpdated__Params {
+  _event: ProfileUpdated;
+
+  constructor(event: ProfileUpdated) {
+    this._event = event;
+  }
+
+  get account(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get profileURI(): string {
+    return this._event.parameters[1].value.toString();
+  }
+}
+
 export class ServiceDonated extends ethereum.Event {
   get params(): ServiceDonated__Params {
     return new ServiceDonated__Params(this);
@@ -341,6 +385,25 @@ export class BCRAvatar extends ethereum.SmartContract {
 
   try_getAvatar(account: Address): ethereum.CallResult<string> {
     let result = super.tryCall("getAvatar", "getAvatar(address):(string)", [
+      ethereum.Value.fromAddress(account)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toString());
+  }
+
+  getProfile(account: Address): string {
+    let result = super.call("getProfile", "getProfile(address):(string)", [
+      ethereum.Value.fromAddress(account)
+    ]);
+
+    return result[0].toString();
+  }
+
+  try_getProfile(account: Address): ethereum.CallResult<string> {
+    let result = super.tryCall("getProfile", "getProfile(address):(string)", [
       ethereum.Value.fromAddress(account)
     ]);
     if (result.reverted) {
@@ -749,8 +812,8 @@ export class SetAvatarCall__Inputs {
     this._call = call;
   }
 
-  get avatarId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
+  get avatarHash(): string {
+    return this._call.inputValues[0].value.toString();
   }
 }
 
@@ -788,6 +851,36 @@ export class SetBaseURICall__Outputs {
   _call: SetBaseURICall;
 
   constructor(call: SetBaseURICall) {
+    this._call = call;
+  }
+}
+
+export class SetProfileCall extends ethereum.Call {
+  get inputs(): SetProfileCall__Inputs {
+    return new SetProfileCall__Inputs(this);
+  }
+
+  get outputs(): SetProfileCall__Outputs {
+    return new SetProfileCall__Outputs(this);
+  }
+}
+
+export class SetProfileCall__Inputs {
+  _call: SetProfileCall;
+
+  constructor(call: SetProfileCall) {
+    this._call = call;
+  }
+
+  get profileHash(): string {
+    return this._call.inputValues[0].value.toString();
+  }
+}
+
+export class SetProfileCall__Outputs {
+  _call: SetProfileCall;
+
+  constructor(call: SetProfileCall) {
     this._call = call;
   }
 }
@@ -919,8 +1012,8 @@ export class UpdateAvatarCall__Inputs {
     this._call = call;
   }
 
-  get avatarId(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
+  get avatarHash(): string {
+    return this._call.inputValues[0].value.toString();
   }
 }
 
@@ -928,6 +1021,36 @@ export class UpdateAvatarCall__Outputs {
   _call: UpdateAvatarCall;
 
   constructor(call: UpdateAvatarCall) {
+    this._call = call;
+  }
+}
+
+export class UpdateProfileCall extends ethereum.Call {
+  get inputs(): UpdateProfileCall__Inputs {
+    return new UpdateProfileCall__Inputs(this);
+  }
+
+  get outputs(): UpdateProfileCall__Outputs {
+    return new UpdateProfileCall__Outputs(this);
+  }
+}
+
+export class UpdateProfileCall__Inputs {
+  _call: UpdateProfileCall;
+
+  constructor(call: UpdateProfileCall) {
+    this._call = call;
+  }
+
+  get profileHash(): string {
+    return this._call.inputValues[0].value.toString();
+  }
+}
+
+export class UpdateProfileCall__Outputs {
+  _call: UpdateProfileCall;
+
+  constructor(call: UpdateProfileCall) {
     this._call = call;
   }
 }

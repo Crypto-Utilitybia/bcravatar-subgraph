@@ -109,22 +109,78 @@ export class Avatar extends Entity {
     this.set("uri", Value.fromString(value));
   }
 
-  get nft(): Bytes {
+  get nft(): Bytes | null {
     let value = this.get("nft");
-    return value.toBytes();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set nft(value: Bytes) {
-    this.set("nft", Value.fromBytes(value));
+  set nft(value: Bytes | null) {
+    if (value === null) {
+      this.unset("nft");
+    } else {
+      this.set("nft", Value.fromBytes(value as Bytes));
+    }
   }
 
-  get tokenId(): BigInt {
+  get tokenId(): BigInt | null {
     let value = this.get("tokenId");
-    return value.toBigInt();
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set tokenId(value: BigInt) {
-    this.set("tokenId", Value.fromBigInt(value));
+  set tokenId(value: BigInt | null) {
+    if (value === null) {
+      this.unset("tokenId");
+    } else {
+      this.set("tokenId", Value.fromBigInt(value as BigInt));
+    }
+  }
+}
+
+export class Profile extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Profile entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Profile entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Profile", id.toString(), this);
+  }
+
+  static load(id: string): Profile | null {
+    return store.get("Profile", id) as Profile | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get uri(): string {
+    let value = this.get("uri");
+    return value.toString();
+  }
+
+  set uri(value: string) {
+    this.set("uri", Value.fromString(value));
   }
 }
 

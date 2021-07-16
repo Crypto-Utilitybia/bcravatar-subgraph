@@ -134,6 +134,44 @@
       },
       {
         "indexed": false,
+        "internalType": "string",
+        "name": "profileURI",
+        "type": "string"
+      }
+    ],
+    "name": "ProfileCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "profileURI",
+        "type": "string"
+      }
+    ],
+    "name": "ProfileUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
@@ -333,6 +371,25 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "getProfile",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "spender",
         "type": "address"
       },
@@ -407,9 +464,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "avatarId",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "avatarHash",
+        "type": "string"
       }
     ],
     "name": "setAvatar",
@@ -426,6 +483,19 @@
       }
     ],
     "name": "setBaseURI",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "profileHash",
+        "type": "string"
+      }
+    ],
+    "name": "setProfile",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -525,12 +595,25 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "avatarId",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "avatarHash",
+        "type": "string"
       }
     ],
     "name": "updateAvatar",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "profileHash",
+        "type": "string"
+      }
+    ],
+    "name": "updateProfile",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

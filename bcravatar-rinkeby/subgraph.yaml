@@ -6,9 +6,9 @@ dataSources:
     name: BCRAvatar
     network: rinkeby
     source:
-      address: "0xDB4308b62A4eBBc67cF7D9d412FEfC65e5b9DE2a"
+      address: "0x5F958E9361397e226468a905508238B634a254C5"
       abi: BCRAvatar
-      startBlock: 8934371
+      startBlock: 8947324
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -31,6 +31,10 @@ dataSources:
           handler: handleAvatarCreated
         - event: AvatarUpdated(indexed address,string)
           handler: handleAvatarUpdated
+        - event: ProfileCreated(indexed address,string)
+          handler: handleProfileCreated
+        - event: ProfileUpdated(indexed address,string)
+          handler: handleProfileUpdated
         - event: NFTRegistered(indexed address,(address,uint256))
           handler: handleNFTRegistered
         - event: OwnershipTransferred(indexed address,indexed address)
