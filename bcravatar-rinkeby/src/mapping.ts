@@ -11,7 +11,13 @@ import {
   ServiceDonated,
   Transfer,
 } from '../generated/BCRAvatar/BCRAvatar'
-import { Approve, Avatar, Profile, Donation } from '../generated/schema'
+import {
+  Approve,
+  Avatar,
+  Profile,
+  Donation,
+  Contract,
+} from '../generated/schema'
 
 export function handleApproval(event: Approval): void {
   // Entities can be loaded from the store using a string ID; this ID
@@ -69,40 +75,57 @@ export function handleApproval(event: Approval): void {
   // - contract.transferFrom(...)
 }
 
+function handleInfo(isProfile: boolean = false): void {
+  let entity = Contract.load('1')
+  if (!entity) {
+    entity = new Contract('1')
+    entity.avatars = BigInt.fromString('0')
+    entity.profiles = BigInt.fromString('0')
+  }
+  const increase = BigInt.fromString('1')
+  if (isProfile) {
+    entity.profiles = entity.profiles.plus(increase)
+  } else {
+    entity.avatars = entity.avatars.plus(increase)
+  }
+  entity.save()
+}
+
 export function handleAvatarCreated(event: AvatarCreated): void {
   const entity = new Avatar(event.params.account.toHex())
   entity.uri = event.params.avatarURI
   entity.save()
+  handleInfo()
 }
 
 export function handleAvatarUpdated(event: AvatarUpdated): void {
-  let entity = Avatar.load(event.params.account.toHex())
-  if (!entity) {
-    entity = new Avatar(event.params.account.toHex())
+  const entity = Avatar.load(event.params.account.toHex())
+  if (entity) {
+    entity.uri = event.params.avatarURI
+    entity.save()
   }
-  entity.uri = event.params.avatarURI
-  entity.save()
 }
 
 export function handleProfileCreated(event: ProfileCreated): void {
   const entity = new Profile(event.params.account.toHex())
   entity.uri = event.params.profileURI
   entity.save()
+  handleInfo(true)
 }
 
 export function handleProfileUpdated(event: ProfileUpdated): void {
-  let entity = Profile.load(event.params.account.toHex())
-  if (!entity) {
-    entity = new Profile(event.params.account.toHex())
+  const entity = Profile.load(event.params.account.toHex())
+  if (entity) {
+    entity.uri = event.params.profileURI
+    entity.save()
   }
-  entity.uri = event.params.profileURI
-  entity.save()
 }
 
 export function handleNFTRegistered(event: NFTRegistered): void {
   let entity = Avatar.load(event.params.account.toHex())
   if (!entity) {
     entity = new Avatar(event.params.account.toHex())
+    handleInfo()
   }
   entity.nft = event.params.nft._contract
   entity.tokenId = event.params.nft.tokenId

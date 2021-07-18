@@ -1,3 +1,9 @@
+type Contract @entity {
+  id: ID!
+  avatars: BigInt!
+  profiles: BigInt!
+}
+
 type Approve @entity {
   id: ID!
   count: BigInt!

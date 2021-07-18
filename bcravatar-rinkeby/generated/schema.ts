@@ -12,6 +12,55 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
+export class Contract extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Contract entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Contract entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Contract", id.toString(), this);
+  }
+
+  static load(id: string): Contract | null {
+    return store.get("Contract", id) as Contract | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get avatars(): BigInt {
+    let value = this.get("avatars");
+    return value.toBigInt();
+  }
+
+  set avatars(value: BigInt) {
+    this.set("avatars", Value.fromBigInt(value));
+  }
+
+  get profiles(): BigInt {
+    let value = this.get("profiles");
+    return value.toBigInt();
+  }
+
+  set profiles(value: BigInt) {
+    this.set("profiles", Value.fromBigInt(value));
+  }
+}
+
 export class Approve extends Entity {
   constructor(id: string) {
     super();
