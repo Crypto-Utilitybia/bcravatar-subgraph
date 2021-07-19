@@ -127,9 +127,16 @@ export function handleNFTRegistered(event: NFTRegistered): void {
     entity = new Avatar(event.params.account.toHex())
     handleInfo()
   }
-  entity.nft = event.params.nft._contract
-  entity.tokenId = event.params.nft.tokenId
+  entity.hasNFT = true
   entity.save()
+}
+
+export function handleNFTDeRegistered(event: NFTRegistered): void {
+  const entity = Avatar.load(event.params.account.toHex())
+  if (entity) {
+    entity.hasNFT = false
+    entity.save()
+  }
 }
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {}

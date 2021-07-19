@@ -80,6 +80,24 @@ export class AvatarUpdated__Params {
   }
 }
 
+export class NFTDeRegistered extends ethereum.Event {
+  get params(): NFTDeRegistered__Params {
+    return new NFTDeRegistered__Params(this);
+  }
+}
+
+export class NFTDeRegistered__Params {
+  _event: NFTDeRegistered;
+
+  constructor(event: NFTDeRegistered) {
+    this._event = event;
+  }
+
+  get account(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
 export class NFTRegistered extends ethereum.Event {
   get params(): NFTRegistered__Params {
     return new NFTRegistered__Params(this);
@@ -95,20 +113,6 @@ export class NFTRegistered__Params {
 
   get account(): Address {
     return this._event.parameters[0].value.toAddress();
-  }
-
-  get nft(): NFTRegisteredNftStruct {
-    return this._event.parameters[1].value.toTuple() as NFTRegisteredNftStruct;
-  }
-}
-
-export class NFTRegisteredNftStruct extends ethereum.Tuple {
-  get _contract(): Address {
-    return this[0].toAddress();
-  }
-
-  get tokenId(): BigInt {
-    return this[1].toBigInt();
   }
 }
 
@@ -226,6 +230,26 @@ export class Transfer__Params {
   }
 }
 
+export class BCRAvatar__avatarNFTsResult {
+  value0: Address;
+  value1: BigInt;
+  value2: boolean;
+
+  constructor(value0: Address, value1: BigInt, value2: boolean) {
+    this.value0 = value0;
+    this.value1 = value1;
+    this.value2 = value2;
+  }
+
+  toMap(): TypedMap<string, ethereum.Value> {
+    let map = new TypedMap<string, ethereum.Value>();
+    map.set("value0", ethereum.Value.fromAddress(this.value0));
+    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
+    map.set("value2", ethereum.Value.fromBoolean(this.value2));
+    return map;
+  }
+}
+
 export class BCRAvatar extends ethereum.SmartContract {
   static bind(address: Address): BCRAvatar {
     return new BCRAvatar("BCRAvatar", address);
@@ -273,6 +297,41 @@ export class BCRAvatar extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  avatarNFTs(param0: Address): BCRAvatar__avatarNFTsResult {
+    let result = super.call(
+      "avatarNFTs",
+      "avatarNFTs(address):(address,uint256,bool)",
+      [ethereum.Value.fromAddress(param0)]
+    );
+
+    return new BCRAvatar__avatarNFTsResult(
+      result[0].toAddress(),
+      result[1].toBigInt(),
+      result[2].toBoolean()
+    );
+  }
+
+  try_avatarNFTs(
+    param0: Address
+  ): ethereum.CallResult<BCRAvatar__avatarNFTsResult> {
+    let result = super.tryCall(
+      "avatarNFTs",
+      "avatarNFTs(address):(address,uint256,bool)",
+      [ethereum.Value.fromAddress(param0)]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      new BCRAvatar__avatarNFTsResult(
+        value[0].toAddress(),
+        value[1].toBigInt(),
+        value[2].toBoolean()
+      )
+    );
   }
 
   balanceOf(account: Address): BigInt {
@@ -354,25 +413,6 @@ export class BCRAvatar extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBoolean());
-  }
-
-  donations(param0: Address): BigInt {
-    let result = super.call("donations", "donations(address):(uint256)", [
-      ethereum.Value.fromAddress(param0)
-    ]);
-
-    return result[0].toBigInt();
-  }
-
-  try_donations(param0: Address): ethereum.CallResult<BigInt> {
-    let result = super.tryCall("donations", "donations(address):(uint256)", [
-      ethereum.Value.fromAddress(param0)
-    ]);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   getAvatar(account: Address): string {
@@ -581,10 +621,6 @@ export class ConstructorCall__Inputs {
   constructor(call: ConstructorCall) {
     this._call = call;
   }
-
-  get _baseURI(): string {
-    return this._call.inputValues[0].value.toString();
-  }
 }
 
 export class ConstructorCall__Outputs {
@@ -630,6 +666,32 @@ export class ApproveCall__Outputs {
 
   get value0(): boolean {
     return this._call.outputValues[0].value.toBoolean();
+  }
+}
+
+export class DeRegisterNFTCall extends ethereum.Call {
+  get inputs(): DeRegisterNFTCall__Inputs {
+    return new DeRegisterNFTCall__Inputs(this);
+  }
+
+  get outputs(): DeRegisterNFTCall__Outputs {
+    return new DeRegisterNFTCall__Outputs(this);
+  }
+}
+
+export class DeRegisterNFTCall__Inputs {
+  _call: DeRegisterNFTCall;
+
+  constructor(call: DeRegisterNFTCall) {
+    this._call = call;
+  }
+}
+
+export class DeRegisterNFTCall__Outputs {
+  _call: DeRegisterNFTCall;
+
+  constructor(call: DeRegisterNFTCall) {
+    this._call = call;
   }
 }
 
@@ -759,6 +821,10 @@ export class RegisterNFTCall__Inputs {
   get tokenId(): BigInt {
     return this._call.inputValues[1].value.toBigInt();
   }
+
+  get isERC721(): boolean {
+    return this._call.inputValues[2].value.toBoolean();
+  }
 }
 
 export class RegisterNFTCall__Outputs {
@@ -821,36 +887,6 @@ export class SetAvatarCall__Outputs {
   _call: SetAvatarCall;
 
   constructor(call: SetAvatarCall) {
-    this._call = call;
-  }
-}
-
-export class SetBaseURICall extends ethereum.Call {
-  get inputs(): SetBaseURICall__Inputs {
-    return new SetBaseURICall__Inputs(this);
-  }
-
-  get outputs(): SetBaseURICall__Outputs {
-    return new SetBaseURICall__Outputs(this);
-  }
-}
-
-export class SetBaseURICall__Inputs {
-  _call: SetBaseURICall;
-
-  constructor(call: SetBaseURICall) {
-    this._call = call;
-  }
-
-  get _baseURI(): string {
-    return this._call.inputValues[0].value.toString();
-  }
-}
-
-export class SetBaseURICall__Outputs {
-  _call: SetBaseURICall;
-
-  constructor(call: SetBaseURICall) {
     this._call = call;
   }
 }

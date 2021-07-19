@@ -13,9 +13,8 @@ type Approve @entity {
 
 type Avatar @entity {
   id: ID!
-  uri: String!
-  nft: Bytes # address
-  tokenId: BigInt
+  uri: String
+  hasNFT: Boolean
 }
 
 type Profile @entity {

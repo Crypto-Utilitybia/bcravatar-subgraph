@@ -149,47 +149,30 @@ export class Avatar extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get uri(): string {
+  get uri(): string | null {
     let value = this.get("uri");
-    return value.toString();
-  }
-
-  set uri(value: string) {
-    this.set("uri", Value.fromString(value));
-  }
-
-  get nft(): Bytes | null {
-    let value = this.get("nft");
     if (value === null || value.kind == ValueKind.NULL) {
       return null;
     } else {
-      return value.toBytes();
+      return value.toString();
     }
   }
 
-  set nft(value: Bytes | null) {
+  set uri(value: string | null) {
     if (value === null) {
-      this.unset("nft");
+      this.unset("uri");
     } else {
-      this.set("nft", Value.fromBytes(value as Bytes));
+      this.set("uri", Value.fromString(value as string));
     }
   }
 
-  get tokenId(): BigInt | null {
-    let value = this.get("tokenId");
-    if (value === null || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigInt();
-    }
+  get hasNFT(): boolean {
+    let value = this.get("hasNFT");
+    return value.toBoolean();
   }
 
-  set tokenId(value: BigInt | null) {
-    if (value === null) {
-      this.unset("tokenId");
-    } else {
-      this.set("tokenId", Value.fromBigInt(value as BigInt));
-    }
+  set hasNFT(value: boolean) {
+    this.set("hasNFT", Value.fromBoolean(value));
   }
 }
 
