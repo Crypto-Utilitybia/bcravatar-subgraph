@@ -174,6 +174,15 @@ export class Avatar extends Entity {
   set hasNFT(value: boolean) {
     this.set("hasNFT", Value.fromBoolean(value));
   }
+
+  get blockTime(): BigInt {
+    let value = this.get("blockTime");
+    return value.toBigInt();
+  }
+
+  set blockTime(value: BigInt) {
+    this.set("blockTime", Value.fromBigInt(value));
+  }
 }
 
 export class Profile extends Entity {
@@ -213,6 +222,15 @@ export class Profile extends Entity {
 
   set uri(value: string) {
     this.set("uri", Value.fromString(value));
+  }
+
+  get blockTime(): BigInt {
+    let value = this.get("blockTime");
+    return value.toBigInt();
+  }
+
+  set blockTime(value: BigInt) {
+    this.set("blockTime", Value.fromBigInt(value));
   }
 }
 
@@ -262,5 +280,14 @@ export class Donation extends Entity {
 
   set amount(value: BigInt) {
     this.set("amount", Value.fromBigInt(value));
+  }
+
+  get blockTime(): BigInt {
+    let value = this.get("blockTime");
+    return value.toBigInt();
+  }
+
+  set blockTime(value: BigInt) {
+    this.set("blockTime", Value.fromBigInt(value));
   }
 }

@@ -15,15 +15,18 @@ type Avatar @entity {
   id: ID!
   uri: String
   hasNFT: Boolean
+  blockTime: BigInt!
 }
 
 type Profile @entity {
   id: ID!
   uri: String!
+  blockTime: BigInt!
 }
 
 type Donation @entity {
   id: ID!
   donator: Bytes! # address
   amount: BigInt!
+  blockTime: BigInt!
 }

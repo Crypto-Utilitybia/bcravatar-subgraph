@@ -94,6 +94,7 @@ function handleInfo(isProfile: boolean = false): void {
 export function handleAvatarCreated(event: AvatarCreated): void {
   const entity = new Avatar(event.params.account.toHex())
   entity.uri = event.params.avatarURI
+  entity.blockTime = event.block.timestamp
   entity.save()
   handleInfo()
 }
@@ -102,6 +103,7 @@ export function handleAvatarUpdated(event: AvatarUpdated): void {
   const entity = Avatar.load(event.params.account.toHex())
   if (entity) {
     entity.uri = event.params.avatarURI
+    entity.blockTime = event.block.timestamp
     entity.save()
   }
 }
@@ -109,6 +111,7 @@ export function handleAvatarUpdated(event: AvatarUpdated): void {
 export function handleProfileCreated(event: ProfileCreated): void {
   const entity = new Profile(event.params.account.toHex())
   entity.uri = event.params.profileURI
+  entity.blockTime = event.block.timestamp
   entity.save()
   handleInfo(true)
 }
@@ -117,6 +120,7 @@ export function handleProfileUpdated(event: ProfileUpdated): void {
   const entity = Profile.load(event.params.account.toHex())
   if (entity) {
     entity.uri = event.params.profileURI
+    entity.blockTime = event.block.timestamp
     entity.save()
   }
 }
@@ -128,6 +132,7 @@ export function handleNFTRegistered(event: NFTRegistered): void {
     handleInfo()
   }
   entity.hasNFT = true
+  entity.blockTime = event.block.timestamp
   entity.save()
 }
 
@@ -135,6 +140,7 @@ export function handleNFTDeRegistered(event: NFTRegistered): void {
   const entity = Avatar.load(event.params.account.toHex())
   if (entity) {
     entity.hasNFT = false
+    entity.blockTime = event.block.timestamp
     entity.save()
   }
 }
@@ -145,6 +151,7 @@ export function handleServiceDonated(event: ServiceDonated): void {
   const entity = new Donation(event.transaction.from.toHex())
   entity.donator = event.params.account
   entity.amount = event.params.amount
+  entity.blockTime = event.block.timestamp
   entity.save()
 }
 
