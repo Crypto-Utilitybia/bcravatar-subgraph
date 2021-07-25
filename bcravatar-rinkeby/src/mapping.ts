@@ -145,6 +145,24 @@ export function handleNFTDeRegistered(event: NFTRegistered): void {
   }
 }
 
+export function handleContractAvatarCreated(event: AvatarCreated): void {
+  const entity = new Avatar(event.params.account.toHex())
+  entity.uri = event.params.avatarURI
+  entity.blockTime = event.block.timestamp
+  entity.isContract = true
+  entity.save()
+  handleInfo()
+}
+
+export function handleContractAvatarUpdated(event: AvatarUpdated): void {
+  const entity = Avatar.load(event.params.account.toHex())
+  if (entity) {
+    entity.uri = event.params.avatarURI
+    entity.blockTime = event.block.timestamp
+    entity.save()
+  }
+}
+
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
 
 export function handleServiceDonated(event: ServiceDonated): void {

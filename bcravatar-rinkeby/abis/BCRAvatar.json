@@ -75,6 +75,44 @@
         "internalType": "address",
         "name": "account",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "avatarURI",
+        "type": "string"
+      }
+    ],
+    "name": "ContractAvatarCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "avatarURI",
+        "type": "string"
+      }
+    ],
+    "name": "ContractAvatarUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
       }
     ],
     "name": "NFTDeRegistered",
@@ -254,7 +292,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "_contract",
+        "name": "nft",
         "type": "address"
       },
       {
@@ -298,6 +336,25 @@
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "contracts",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -446,7 +503,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_contract",
+        "name": "nft",
         "type": "address"
       },
       {
@@ -481,6 +538,42 @@
       }
     ],
     "name": "setAvatar",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "avatarHash",
+        "type": "string"
+      }
+    ],
+    "name": "setContractAvatar",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "avatarHash",
+        "type": "string"
+      }
+    ],
+    "name": "setOwnableContractAvatar",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -586,32 +679,6 @@
       }
     ],
     "name": "transferOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "avatarHash",
-        "type": "string"
-      }
-    ],
-    "name": "updateAvatar",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "profileHash",
-        "type": "string"
-      }
-    ],
-    "name": "updateProfile",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

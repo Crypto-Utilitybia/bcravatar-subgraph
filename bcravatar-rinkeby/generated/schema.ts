@@ -183,6 +183,15 @@ export class Avatar extends Entity {
   set blockTime(value: BigInt) {
     this.set("blockTime", Value.fromBigInt(value));
   }
+
+  get isContract(): boolean {
+    let value = this.get("isContract");
+    return value.toBoolean();
+  }
+
+  set isContract(value: boolean) {
+    this.set("isContract", Value.fromBoolean(value));
+  }
 }
 
 export class Profile extends Entity {

@@ -16,6 +16,7 @@ type Avatar @entity {
   uri: String
   hasNFT: Boolean
   blockTime: BigInt!
+  isContract: Boolean
 }
 
 type Profile @entity {

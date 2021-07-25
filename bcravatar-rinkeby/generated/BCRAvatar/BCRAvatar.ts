@@ -80,6 +80,50 @@ export class AvatarUpdated__Params {
   }
 }
 
+export class ContractAvatarCreated extends ethereum.Event {
+  get params(): ContractAvatarCreated__Params {
+    return new ContractAvatarCreated__Params(this);
+  }
+}
+
+export class ContractAvatarCreated__Params {
+  _event: ContractAvatarCreated;
+
+  constructor(event: ContractAvatarCreated) {
+    this._event = event;
+  }
+
+  get account(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get avatarURI(): string {
+    return this._event.parameters[1].value.toString();
+  }
+}
+
+export class ContractAvatarUpdated extends ethereum.Event {
+  get params(): ContractAvatarUpdated__Params {
+    return new ContractAvatarUpdated__Params(this);
+  }
+}
+
+export class ContractAvatarUpdated__Params {
+  _event: ContractAvatarUpdated;
+
+  constructor(event: ContractAvatarUpdated) {
+    this._event = event;
+  }
+
+  get account(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get avatarURI(): string {
+    return this._event.parameters[1].value.toString();
+  }
+}
+
 export class NFTDeRegistered extends ethereum.Event {
   get params(): NFTDeRegistered__Params {
     return new NFTDeRegistered__Params(this);
@@ -366,6 +410,25 @@ export class BCRAvatar extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toString());
+  }
+
+  contracts(param0: Address): boolean {
+    let result = super.call("contracts", "contracts(address):(bool)", [
+      ethereum.Value.fromAddress(param0)
+    ]);
+
+    return result[0].toBoolean();
+  }
+
+  try_contracts(param0: Address): ethereum.CallResult<boolean> {
+    let result = super.tryCall("contracts", "contracts(address):(bool)", [
+      ethereum.Value.fromAddress(param0)
+    ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
   decimals(): i32 {
@@ -814,7 +877,7 @@ export class RegisterNFTCall__Inputs {
     this._call = call;
   }
 
-  get _contract(): Address {
+  get nft(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
@@ -887,6 +950,74 @@ export class SetAvatarCall__Outputs {
   _call: SetAvatarCall;
 
   constructor(call: SetAvatarCall) {
+    this._call = call;
+  }
+}
+
+export class SetContractAvatarCall extends ethereum.Call {
+  get inputs(): SetContractAvatarCall__Inputs {
+    return new SetContractAvatarCall__Inputs(this);
+  }
+
+  get outputs(): SetContractAvatarCall__Outputs {
+    return new SetContractAvatarCall__Outputs(this);
+  }
+}
+
+export class SetContractAvatarCall__Inputs {
+  _call: SetContractAvatarCall;
+
+  constructor(call: SetContractAvatarCall) {
+    this._call = call;
+  }
+
+  get account(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get avatarHash(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+}
+
+export class SetContractAvatarCall__Outputs {
+  _call: SetContractAvatarCall;
+
+  constructor(call: SetContractAvatarCall) {
+    this._call = call;
+  }
+}
+
+export class SetOwnableContractAvatarCall extends ethereum.Call {
+  get inputs(): SetOwnableContractAvatarCall__Inputs {
+    return new SetOwnableContractAvatarCall__Inputs(this);
+  }
+
+  get outputs(): SetOwnableContractAvatarCall__Outputs {
+    return new SetOwnableContractAvatarCall__Outputs(this);
+  }
+}
+
+export class SetOwnableContractAvatarCall__Inputs {
+  _call: SetOwnableContractAvatarCall;
+
+  constructor(call: SetOwnableContractAvatarCall) {
+    this._call = call;
+  }
+
+  get account(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get avatarHash(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+}
+
+export class SetOwnableContractAvatarCall__Outputs {
+  _call: SetOwnableContractAvatarCall;
+
+  constructor(call: SetOwnableContractAvatarCall) {
     this._call = call;
   }
 }
@@ -1027,66 +1158,6 @@ export class TransferOwnershipCall__Outputs {
   _call: TransferOwnershipCall;
 
   constructor(call: TransferOwnershipCall) {
-    this._call = call;
-  }
-}
-
-export class UpdateAvatarCall extends ethereum.Call {
-  get inputs(): UpdateAvatarCall__Inputs {
-    return new UpdateAvatarCall__Inputs(this);
-  }
-
-  get outputs(): UpdateAvatarCall__Outputs {
-    return new UpdateAvatarCall__Outputs(this);
-  }
-}
-
-export class UpdateAvatarCall__Inputs {
-  _call: UpdateAvatarCall;
-
-  constructor(call: UpdateAvatarCall) {
-    this._call = call;
-  }
-
-  get avatarHash(): string {
-    return this._call.inputValues[0].value.toString();
-  }
-}
-
-export class UpdateAvatarCall__Outputs {
-  _call: UpdateAvatarCall;
-
-  constructor(call: UpdateAvatarCall) {
-    this._call = call;
-  }
-}
-
-export class UpdateProfileCall extends ethereum.Call {
-  get inputs(): UpdateProfileCall__Inputs {
-    return new UpdateProfileCall__Inputs(this);
-  }
-
-  get outputs(): UpdateProfileCall__Outputs {
-    return new UpdateProfileCall__Outputs(this);
-  }
-}
-
-export class UpdateProfileCall__Inputs {
-  _call: UpdateProfileCall;
-
-  constructor(call: UpdateProfileCall) {
-    this._call = call;
-  }
-
-  get profileHash(): string {
-    return this._call.inputValues[0].value.toString();
-  }
-}
-
-export class UpdateProfileCall__Outputs {
-  _call: UpdateProfileCall;
-
-  constructor(call: UpdateProfileCall) {
     this._call = call;
   }
 }
