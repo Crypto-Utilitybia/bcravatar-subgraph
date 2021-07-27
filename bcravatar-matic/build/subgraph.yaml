@@ -1,14 +1,14 @@
 specVersion: 0.0.2
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: BCRAvatar
-    network: rinkeby
+    network: matic
     source:
-      address: "0xD673224197Cf741365094B50b1ef1A2c99b84Cc3"
+      address: "0xbF8ef894fC52b423c50A8086415B9D5620FC64ce"
       abi: BCRAvatar
-      startBlock: 9010016
+      startBlock: 17326865
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -21,7 +21,7 @@ dataSources:
         - Donation
       abis:
         - name: BCRAvatar
-          file: ./abis/BCRAvatar.json
+          file: BCRAvatar/abis/BCRAvatar.json
       eventHandlers:
         - event: Approval(indexed address,indexed address,uint256)
           handler: handleApproval
@@ -51,4 +51,4 @@ dataSources:
           handler: handleServiceDonated
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: ./src/mapping.ts
+      file: BCRAvatar/BCRAvatar.wasm
