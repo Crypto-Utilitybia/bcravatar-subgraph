@@ -23,6 +23,7 @@ type Profile @entity {
   id: ID!
   uri: String!
   blockTime: BigInt!
+  isContract: Boolean
 }
 
 type Donation @entity {

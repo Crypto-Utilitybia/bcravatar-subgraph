@@ -6,9 +6,9 @@ dataSources:
     name: BCRAvatar
     network: rinkeby
     source:
-      address: "0x6EedE8E28C581989260da2d9401de60Ae2d4AA64"
+      address: "0xD673224197Cf741365094B50b1ef1A2c99b84Cc3"
       abi: BCRAvatar
-      startBlock: 8999967
+      startBlock: 9010016
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -43,6 +43,10 @@ dataSources:
           handler: handleContractAvatarCreated
         - event: ContractAvatarUpdated(indexed address,string)
           handler: handleContractAvatarUpdated
+        - event: ContractProfileCreated(indexed address,string)
+          handler: handleContractProfileCreated
+        - event: ContractProfileUpdated(indexed address,string)
+          handler: handleContractProfileUpdated
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
         - event: ServiceDonated(indexed address,uint256)

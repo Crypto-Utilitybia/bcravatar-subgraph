@@ -10,6 +10,10 @@ import {
   OwnershipTransferred,
   ServiceDonated,
   Transfer,
+  ContractAvatarCreated,
+  ContractAvatarUpdated,
+  ContractProfileCreated,
+  ContractProfileUpdated,
 } from '../generated/BCRAvatar/BCRAvatar'
 import {
   Approve,
@@ -145,7 +149,9 @@ export function handleNFTDeRegistered(event: NFTRegistered): void {
   }
 }
 
-export function handleContractAvatarCreated(event: AvatarCreated): void {
+export function handleContractAvatarCreated(
+  event: ContractAvatarCreated
+): void {
   const entity = new Avatar(event.params.account.toHex())
   entity.uri = event.params.avatarURI
   entity.blockTime = event.block.timestamp
@@ -154,10 +160,34 @@ export function handleContractAvatarCreated(event: AvatarCreated): void {
   handleInfo()
 }
 
-export function handleContractAvatarUpdated(event: AvatarUpdated): void {
+export function handleContractAvatarUpdated(
+  event: ContractAvatarUpdated
+): void {
   const entity = Avatar.load(event.params.account.toHex())
   if (entity) {
     entity.uri = event.params.avatarURI
+    entity.blockTime = event.block.timestamp
+    entity.save()
+  }
+}
+
+export function handleContractProfileCreated(
+  event: ContractProfileCreated
+): void {
+  const entity = new Profile(event.params.account.toHex())
+  entity.uri = event.params.profileURI
+  entity.blockTime = event.block.timestamp
+  entity.isContract = true
+  entity.save()
+  handleInfo()
+}
+
+export function handleContractProfileUpdated(
+  event: ContractProfileUpdated
+): void {
+  const entity = Profile.load(event.params.account.toHex())
+  if (entity) {
+    entity.uri = event.params.profileURI
     entity.blockTime = event.block.timestamp
     entity.save()
   }
