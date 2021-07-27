@@ -14,13 +14,11 @@ dataSources:
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
-        - Approval
-        - AvatarCreated
-        - AvatarUpdated
-        - NFTRegistered
-        - OwnershipTransferred
-        - ServiceDonated
-        - Transfer
+        - Contract
+        - Approve
+        - Avatar
+        - Profile
+        - Donation
       abis:
         - name: BCRAvatar
           file: BCRAvatar/abis/BCRAvatar.json
