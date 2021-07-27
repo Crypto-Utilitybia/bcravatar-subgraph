@@ -179,7 +179,7 @@ export function handleContractProfileCreated(
   entity.blockTime = event.block.timestamp
   entity.isContract = true
   entity.save()
-  handleInfo()
+  handleInfo(true)
 }
 
 export function handleContractProfileUpdated(
