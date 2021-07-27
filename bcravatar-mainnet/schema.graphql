@@ -1,0 +1,34 @@
+type Contract @entity {
+  id: ID!
+  avatars: BigInt!
+  profiles: BigInt!
+}
+
+type Approve @entity {
+  id: ID!
+  count: BigInt!
+  owner: Bytes! # address
+  spender: Bytes! # address
+}
+
+type Avatar @entity {
+  id: ID!
+  uri: String
+  hasNFT: Boolean
+  blockTime: BigInt!
+  isContract: Boolean
+}
+
+type Profile @entity {
+  id: ID!
+  uri: String!
+  blockTime: BigInt!
+  isContract: Boolean
+}
+
+type Donation @entity {
+  id: ID!
+  donator: Bytes! # address
+  amount: BigInt!
+  blockTime: BigInt!
+}

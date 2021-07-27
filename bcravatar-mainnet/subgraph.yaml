@@ -1,0 +1,54 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: BCRAvatar
+    network: mainnet
+    source:
+      address: "0xBb9499d98C01D97Cc02B40Fa767531c308989995"
+      abi: BCRAvatar
+      startBlock: 12909100
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Contract
+        - Approve
+        - Avatar
+        - Profile
+        - Donation
+      abis:
+        - name: BCRAvatar
+          file: ./abis/BCRAvatar.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: AvatarCreated(indexed address,string)
+          handler: handleAvatarCreated
+        - event: AvatarUpdated(indexed address,string)
+          handler: handleAvatarUpdated
+        - event: ProfileCreated(indexed address,string)
+          handler: handleProfileCreated
+        - event: ProfileUpdated(indexed address,string)
+          handler: handleProfileUpdated
+        - event: NFTRegistered(indexed address)
+          handler: handleNFTRegistered
+        - event: NFTDeRegistered(indexed address)
+          handler: handleNFTDeRegistered
+        - event: ContractAvatarCreated(indexed address,string)
+          handler: handleContractAvatarCreated
+        - event: ContractAvatarUpdated(indexed address,string)
+          handler: handleContractAvatarUpdated
+        - event: ContractProfileCreated(indexed address,string)
+          handler: handleContractProfileCreated
+        - event: ContractProfileUpdated(indexed address,string)
+          handler: handleContractProfileUpdated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: ServiceDonated(indexed address,uint256)
+          handler: handleServiceDonated
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts
